@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Gotripnow</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--tabwidget-->
+    <string name="navigation">Navigation</string>
+    <string name="strategy">Strategy</string>
+    <string name="personal">Personal</string>
+
+    <!--login activity-->
+    <string name="signup">Sign up</string>
+    <string name="account_hint">Account</string>
+    <string name="username">Username</string>
+    <string name="passsword">Password</string>
+    <string name="signin">Sign in</string>
+    <string name="title_activity_signin">Signup</string>
+    
+    <!--sign up-->
+    <string name="new_phone_number">Input your phone number</string>
+    <string name="get_verification_code">Get code</string>
+    <string name="next">Next</string>
+    <string name="operation_signin">Register</string>
+</resources>
