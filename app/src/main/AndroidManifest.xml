@@ -38,8 +38,16 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
-            android:name="com.siyiping.gotrip.ui.Signin"
+            android:name="com.siyiping.gotrip.ui.Signup"
             android:label="@string/title_activity_signin" >
+        </activity>
+        <activity
+            android:name="com.siyiping.gotrip.ui.ConfirpasswordActivity"
+            android:label="@string/title_activity_confirpassword"
+            android:parentActivityName="com.siyiping.gotrip.ui.Signup" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.siyiping.gotrip.ui.Signup" />
         </activity>
     </application>
 

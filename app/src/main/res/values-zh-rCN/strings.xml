@@ -11,17 +11,22 @@
     <string name="personal">个人</string>
 
     <!--login activity-->
-    <string name="signup">点击登录</string>
+    <string name="signup">点击注册</string>
     <string name="account_hint">手机号</string>
     <string name="username">用户名</string>
     <string name="passsword">密码</string>
-    <string name="signin">注册</string>
+    <string name="signin">登录</string>
     <string name="error_invalid_phone">请填写正确的手机号</string>
     <string name="title_activity_signin">注册</string>
 
     <!--sign up activity-->
     <string name="new_phone_number">请输入手机号</string>
     <string name="get_verification_code">获取验证码</string>
+    <string name="pleas_input_verification_code">请输入验证码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_confirn_password">再次输入密码</string>
+    <string name="pleas_input_correct_code">请输入正确的验证码</string>
+    <string name="please_input_nickname">请输入昵称</string>
     <string name="next">下一步</string>
     <string name="operation_signin">注册</string>
 </resources>

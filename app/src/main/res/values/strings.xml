@@ -20,6 +20,15 @@
     <!--sign up-->
     <string name="new_phone_number">Input your phone number</string>
     <string name="get_verification_code">Get code</string>
+    <string name="please_input_verification_code">Input verification code</string>
+    <string name="please_confirn_password">Input password again</string>
+    <string name="please_input_password">Input password</string>
+    <string name="please_input_nickname">Input nickname</string>
+    <string name="pleas_input_correct_code">Input correct code</string>
     <string name="next">Next</string>
     <string name="operation_signin">Register</string>
+    <string name="title_activity_confirpassword">ConfirpasswordActivity</string>
+    
+    <!--string filter-->
+    <string name="num_and_character">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>

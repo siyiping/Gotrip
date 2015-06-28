@@ -30,7 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.siyiping.gotrip.ui.Signin;
+import com.siyiping.gotrip.ui.Signup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_signup, menu);
+        getMenuInflater().inflate(R.menu.menu_signin, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -112,7 +112,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         switch (item.getItemId()){
             case R.id.signup:
                 Intent mIntent=new Intent();
-                mIntent.setClass(this, Signin.class);
+                mIntent.setClass(this, Signup.class);
                 startActivity(mIntent);
                 break;
 

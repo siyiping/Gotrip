@@ -12,21 +12,18 @@
         android:layout_marginRight="10dp">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_phone_number"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="8dp" />
 
         <LinearLayout android:id="@+id/new_account" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical">
+            android:layout_height="wrap_content" android:orientation="vertical"
+            android:layout_marginTop="20dp">
 
 
             <AutoCompleteTextView android:id="@+id/new_account_phone" android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" android:maxLines="1"
                 android:singleLine="true"
+                android:digits="0123456789"
+                android:hint="@string/new_phone_number"
                 android:layout_marginTop="8dp" />
 
 
@@ -47,6 +44,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:inputType="number"
+                    android:digits="0123456789"
+                    android:hint="@string/please_input_verification_code"
                     android:maxLines="1" android:singleLine="true"
                     android:layout_marginTop="8dp" />
 
@@ -73,6 +72,7 @@
                 android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
                 android:background="@drawable/solidbutton"
                 android:textStyle="bold" />
+
 
         </LinearLayout>
     </LinearLayout>

@@ -30,11 +30,14 @@ public class MainActivity extends FragmentActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        AVOSCloud.initialize(this, "dncec7gcbcmyxumaunavxokqb2ujh04xeagyj0t110xqgpa9", "krsmwsb0c00avt8xpqd60v8135vuq3mdyfjsysz0ppwddc45");
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         super.onCreate(savedInstanceState);
+        AVOSCloud.initialize(this, "dncec7gcbcmyxumaunavxokqb2ujh04xeagyj0t110xqgpa9", "krsmwsb0c00avt8xpqd60v8135vuq3mdyfjsysz0ppwddc45");
+        AVOSCloud.setDebugLogEnabled(true);
         setContentView(R.layout.activity_main);
+
 
         mRes=getResources();
 
@@ -90,4 +93,6 @@ public class MainActivity extends FragmentActivity  {
         tv.setText(name);
         return v;
     }
+
+
 }
