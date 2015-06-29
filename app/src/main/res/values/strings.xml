@@ -31,6 +31,8 @@
     <string name="finish_signup">Complete</string>
     <string name="password_too_short">Password too short</string>
     <string name="password_too_long">Password too long</string>
+    <string name="password_confirn_failed">Input password agian</string>
+    <string name="forget_input_nickname">Please input nickname</string>
     
     <!--string filter-->
     <string name="num_and_character">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>

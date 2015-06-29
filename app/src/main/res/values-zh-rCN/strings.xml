@@ -32,4 +32,6 @@
     <string name="finish_signup">完成</string>
     <string name="password_too_short">密码不够长哦^_^</string>
     <string name="password_too_long">密码太长会忘的ˇˍˇ</string>
+    <string name="password_confirn_failed">两次输入的密码不同</string>
+    <string name="forget_input_nickname">给自己起个大名吧！</string>
 </resources>

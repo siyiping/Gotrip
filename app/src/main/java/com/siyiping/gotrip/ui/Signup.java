@@ -1,13 +1,13 @@
 package com.siyiping.gotrip.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +29,6 @@ public class Signup extends Activity {
     private Button mNext;
     private boolean mGetButtonclick;
     private String phone=null;
-    public final Context mContext=getApplicationContext();
 
 
     @Override
@@ -83,7 +82,7 @@ public class Signup extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()==4 && mGetButtonclick)
+                if(s.length()==6 && mGetButtonclick)
                     mNext.setEnabled(true);
             }
         });
@@ -109,7 +108,7 @@ public class Signup extends Activity {
                     AVOSCloud.requestSMSCodeInBackground(phone, "自游行", "注册", 15, new RequestMobileCodeCallback(){
                         @Override
                         public void done(AVException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
                         }
                     });
 //                    new AsyncTask<Void,Void,Void>(){
@@ -137,31 +136,31 @@ public class Signup extends Activity {
                     break;
 
                 case R.id.sign_up_next:
-
+                    Log.e("siyiping","begin to verify sms code");
                     String mCode=mTextCode.getText().toString();
                     if(!isCodeValid(mCode)){
                         mTextCode.setError(getString(R.string.pleas_input_correct_code));
                         return;
                     }
 
-                    if(isCodeValid(mCode) && isPhoneValid(phone))
-
-
-                    AVOSCloud.verifyCodeInBackground(mCode,phone,
-                            new AVMobilePhoneVerifyCallback(){
-                                @Override
-                                public void done(AVException e){
-                                    if(e==null){
-                                        //发送成功
-                                        Intent registernext=new Intent();
-                                        registernext.setClass(mContext,ConfirpasswordActivity.class);
-                                        registernext.putExtra("phone",phone);
-                                        mContext.startActivity(registernext);
+                    if(isCodeValid(mCode) && isPhoneValid(phone)) {
+                        Log.i("siyiping","begin to verify sms code");
+                        AVOSCloud.verifyCodeInBackground(mCode, phone,
+                                new AVMobilePhoneVerifyCallback() {
+                                    @Override
+                                    public void done(AVException e) {
+                                        if (e == null) {
+                                            //发送成功
+                                            Log.i("siyiping","verify sms code  suc");
+                                            Intent registernext = new Intent();
+                                            registernext.setClass(getApplicationContext(), ConfirpasswordActivity.class);
+                                            registernext.putExtra("phone", phone);
+                                            startActivity(registernext);
+                                        }
                                     }
-                                }
-                            });
+                                });
 
-
+                    }
                     break;
 
             }
