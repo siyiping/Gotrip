@@ -29,4 +29,7 @@
     <string name="please_input_nickname">请输入昵称</string>
     <string name="next">下一步</string>
     <string name="operation_signin">注册</string>
+    <string name="finish_signup">完成</string>
+    <string name="password_too_short">密码不够长哦^_^</string>
+    <string name="password_too_long">密码太长会忘的ˇˍˇ</string>
 </resources>

@@ -28,6 +28,9 @@
     <string name="next">Next</string>
     <string name="operation_signin">Register</string>
     <string name="title_activity_confirpassword">ConfirpasswordActivity</string>
+    <string name="finish_signup">Complete</string>
+    <string name="password_too_short">Password too short</string>
+    <string name="password_too_long">Password too long</string>
     
     <!--string filter-->
     <string name="num_and_character">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
