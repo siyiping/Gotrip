@@ -1,5 +1,6 @@
 package com.example.siyiping.gotrip;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,7 @@ public class MainActivity extends FragmentActivity  {
     private FragmentTabHost mTabhost=null;
     private View indicator=null;
     private Resources mRes;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class MainActivity extends FragmentActivity  {
         AVOSCloud.setDebugLogEnabled(true);
         setContentView(R.layout.activity_main);
 
+        mIntent=getIntent();
+        String tabtag=mIntent.getStringExtra("tabtag");
 
         mRes=getResources();
 
@@ -52,6 +56,12 @@ public class MainActivity extends FragmentActivity  {
 
         indicator=getIndicatorView(mRes.getString(R.string.personal),R.layout.personaltab);
         mTabhost.addTab(mTabhost.newTabSpec("personal").setIndicator(indicator), Personal.class, null);
+
+        if(tabtag != null){
+            mTabhost.setCurrentTabByTag(tabtag);
+        }else{
+            mTabhost.setCurrentTabByTag("personal");
+        }
 
         AVAnalytics.trackAppOpened(getIntent());
 

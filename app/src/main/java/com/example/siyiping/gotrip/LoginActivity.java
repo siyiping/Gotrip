@@ -17,7 +17,10 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 import com.siyiping.gotrip.ui.Signup;
 
 import java.util.ArrayList;
@@ -70,30 +76,73 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         // Set up the login form.
         mPhoneView = (AutoCompleteTextView) findViewById(R.id.account);
-        populateAutoComplete();
-
+        //populateAutoComplete();
+        final Button mPhoneSignInButton = (Button) findViewById(R.id.phone_sign_in_button);
         mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!TextUtils.isEmpty(mPasswordView.getText()) && !TextUtils.isEmpty(mPhoneView.getText())){
+                    mPhoneSignInButton.setEnabled(true);
+                }
+            }
+        });
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    //attemptLogin();
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+
+        mPhoneSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                //attemptLogin();
+                Login();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void Login(){
+        Log.i("siyiping","begin to login");
+        String phone = mPhoneView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        if(isNameValid(phone) && isPasswordValid(password)){
+            AVUser currentuser=new AVUser();
+            Log.i("siyiping","password is legal");
+            currentuser.logInInBackground(phone, password, new LogInCallback<AVUser>() {
+                @Override
+                public void done(AVUser avUser, AVException e) {
+                    Log.i("siyiping","login   callback");
+                    if(avUser != null){
+                        Intent  intent=new Intent();
+                        intent.setClass(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("tabtag","personal");
+                        startActivity(intent);
+                    }else{
+
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -189,9 +238,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         return phone.length()==11;
     }
 
+    private boolean isNameValid(String name) {
+        //TODO: Replace this with your own logic
+        return name.length()>0;
+    }
+
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 5 && password.length()<16;
     }
 
     /**
@@ -319,11 +373,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mPhone;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
+        UserLoginTask(String phone, String password) {
+            mPhone = phone;
             mPassword = password;
         }
 
@@ -340,7 +394,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+                if (pieces[0].equals(mPhone)) {
                     // Account exists, return true if the password matches.
                     return pieces[1].equals(mPassword);
                 }

@@ -22,7 +22,7 @@
     <!--sign up activity-->
     <string name="new_phone_number">请输入手机号</string>
     <string name="get_verification_code">获取验证码</string>
-    <string name="pleas_input_verification_code">请输入验证码</string>
+    <string name="please_input_verification_code">请输入验证码</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_confirn_password">再次输入密码</string>
     <string name="pleas_input_correct_code">请输入正确的验证码</string>

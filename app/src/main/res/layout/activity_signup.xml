@@ -2,20 +2,51 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="0dp"
     tools:context="com.siyiping.gotrip.ui.Signup">
 
 
     <LinearLayout android:id="@+id/signup_panel" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_nickname"
+            android:inputType="textFilter"
+
+            android:background="@null"
+            android:layout_marginTop="8dp"
+            android:hint="@string/please_input_nickname"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_password"
+            android:editable="false"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:inputType="textPassword"
+            android:hint="@string/please_input_password"
+            android:digits="@string/num_and_character"
+            android:layout_marginTop="8dp"/>
 
 
 
-        <LinearLayout android:id="@+id/new_account" android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical"
-            android:layout_marginTop="20dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_confirn_password"
+            android:inputType="textPassword"
+            android:hint="@string/please_confirn_password"
+            android:digits="@string/num_and_character"
+            android:editable="false"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="8dp"/>
 
 
             <AutoCompleteTextView android:id="@+id/new_account_phone" android:layout_width="match_parent"
@@ -23,6 +54,7 @@
                 android:inputType="number" android:maxLines="1"
                 android:singleLine="true"
                 android:digits="0123456789"
+                android:editable="false"
                 android:hint="@string/new_phone_number"
                 android:layout_marginTop="8dp" />
 
@@ -45,6 +77,7 @@
                     android:layout_weight="7"
                     android:inputType="number"
                     android:digits="0123456789"
+                    android:editable="false"
                     android:hint="@string/please_input_verification_code"
                     android:maxLines="1" android:singleLine="true"
                     android:layout_marginTop="8dp" />
@@ -66,15 +99,19 @@
                 android:layout_height="2px"
                 android:background="#CCCCCC"/>
 
-            <Button android:id="@+id/sign_up_next" style="?android:textAppearanceSmall"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="50dp" android:text="@string/next"
-                android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/finish_signup"
+                android:id="@+id/finish_signup"
+                android:layout_gravity="center_horizontal"
                 android:background="@drawable/solidbutton"
-                android:textStyle="bold" />
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:enabled="false" />
 
 
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,13 +1,11 @@
 package com.siyiping.gotrip.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +14,8 @@ import android.widget.EditText;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
-import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.RequestMobileCodeCallback;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.SignUpCallback;
 import com.example.siyiping.gotrip.R;
 
 
@@ -26,10 +24,19 @@ public class Signup extends Activity {
     private EditText mTextphone;
     private EditText mTextCode;
     private Button mGetcode;
-    private Button mNext;
+    private EditText mPassword;
+    private EditText mPasswordconfirn;
+    private EditText mNickname;
+    private Button mButtoncomplete;
     private boolean mGetButtonclick;
+    private String nickname=null;
     private String phone=null;
+    private String password=null;
+    private String passwordconfirm=null;
+    private String code=null;
+    private boolean isPasswordConfirned=false;;
 
+    private AVUser newuser = new AVUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +69,15 @@ public class Signup extends Activity {
 
     public void initView(){
 
-        mNext=(Button)findViewById(R.id.sign_up_next);
-        mNext.setOnClickListener(l);
-        mNext.setEnabled(false);
         mTextphone=(EditText)findViewById(R.id.new_account_phone);
         mGetcode=(Button)findViewById(R.id.getcode);
         mGetcode.setOnClickListener(l);
+        mButtoncomplete=(Button)findViewById(R.id.finish_signup);
+        mButtoncomplete.setOnClickListener(l);
+        mPassword=(EditText)findViewById(R.id.input_password);
+        mPassword.setOnFocusChangeListener(listener);
+        mPasswordconfirn=(EditText)findViewById(R.id.input_confirn_password);
+        mNickname=(EditText)findViewById(R.id.input_nickname);
         mTextCode=(EditText)findViewById(R.id.verification_code);
         mTextCode.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,90 +92,73 @@ public class Signup extends Activity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()==6 && mGetButtonclick)
-                    mNext.setEnabled(true);
+                if(s.length()==6)
+                    mButtoncomplete.setEnabled(true);
             }
         });
-
     }
+
+    View.OnFocusChangeListener listener=new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(!hasFocus){
+                if(mPassword.length()<6) {
+                    mPassword.setError(getString(R.string.password_too_short));
+                    mPassword.setText("");
+                }else if (mPassword.length()>15) {
+                    mPassword.setError(getString(R.string.password_too_long));
+                    mPassword.setText("");
+                }
+
+            }
+        }
+    };
 
 
     View.OnClickListener l=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Looper.getMainLooper();
-            switch (v.getId()){
+
+            switch (v.getId()) {
+
                 case R.id.getcode:
-                    mGetButtonclick=true;
-                    mTextCode.requestFocus();
-                    phone=mTextphone.getText().toString();
-                    if(!isPhoneValid(phone)){
-                        mTextphone.setError("请输入正确的手机号");
+                    if(!checkInputIsLegal())
                         return;
-                    }
                     mGetcode.setEnabled(false);
+                    mGetButtonclick = true;
+                    mTextCode.requestFocus();
                     downTimer.start();
-                    AVOSCloud.requestSMSCodeInBackground(phone, "自游行", "注册", 15, new RequestMobileCodeCallback(){
+                    newuser.setUsername(nickname);
+                    newuser.setPassword(password);
+                    newuser.setMobilePhoneNumber(phone);
+
+                    newuser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(AVException e) {
                             //e.printStackTrace();
                         }
                     });
-//                    new AsyncTask<Void,Void,Void>(){
-//                        boolean suc;
-//
-//                        @Override
-//                        protected Void doInBackground(Void... par) {
-//
-//                            try {
-//                                AVOSCloud.requestSMSCodeInBackground(phone, "自游行", "注册", 15);
-//                                suc=true;
-//                            } catch (AVException e) {
-//                                e.printStackTrace();
-//                                suc=false;
-//                            }
-//                            return null;
-//                        }
-//
-//                        @Override
-//                        protected void onPostExecute(Void aVoid) {
-//                            super.onPostExecute(aVoid);
-//                        }
-//                    }.execute();
+
 
                     break;
 
-                case R.id.sign_up_next:
-                    Log.e("siyiping","begin to verify sms code");
-                    String mCode=mTextCode.getText().toString();
-                    if(!isCodeValid(mCode)){
+                case R.id.finish_signup:
+                    String mCode = mTextCode.getText().toString();
+                    if (!isCodeValid(mCode)) {
                         mTextCode.setError(getString(R.string.pleas_input_correct_code));
                         return;
                     }
 
-                    if(isCodeValid(mCode) && isPhoneValid(phone)) {
-                        Log.i("siyiping","begin to verify sms code");
-                        AVOSCloud.verifyCodeInBackground(mCode, phone,
-                                new AVMobilePhoneVerifyCallback() {
-                                    @Override
-                                    public void done(AVException e) {
-                                        if (e == null) {
-                                            //发送成功
-                                            Log.i("siyiping","verify sms code  suc");
-                                            Intent registernext = new Intent();
-                                            registernext.setClass(getApplicationContext(), ConfirpasswordActivity.class);
-                                            registernext.putExtra("phone", phone);
-                                            startActivity(registernext);
-                                        }
-                                    }
-                                });
-
-                    }
+                    newuser.verifyMobilePhoneInBackground(mCode, new AVMobilePhoneVerifyCallback() {
+                        @Override
+                        public void done(AVException e) {
+                            // TODO Auto-generated method stub
+                        }
+                    });
                     break;
 
             }
-
-
         }
     };
 
@@ -194,6 +187,47 @@ public class Signup extends Activity {
         };
 
 
+    private boolean ispasswordlegal(){
+        int length=mPassword.length();
+        if(length<6){
+            mPassword.setError(getString(R.string.password_too_short));
+            return false;
+        }else if(length>15){
+            mPassword.setError(getString(R.string.password_too_long));
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    private boolean checkInputIsLegal(){
+        nickname=mNickname.getText().toString();
+        if(nickname.length()<5 || nickname.length()>15){
+            mNickname.setError("请输入正确长度的昵称");
+            return false;
+        }
+
+        phone = mTextphone.getText().toString();
+        if (!isPhoneValid(phone)) {
+            mTextphone.setError("请输入正确的手机号");
+            return false;
+        }
+
+        password=mPassword.getText().toString();
+        if(password.length()<6 || password.length()>15){
+            mPassword.setError("请输入正确长度的密码");
+            return false;
+        }
+
+        passwordconfirm=mPasswordconfirn.getText().toString();
+        if(!passwordconfirm.equals(password)){
+            mPasswordconfirn.setError("两次输入的密码不对");
+            mPasswordconfirn.setText(null);
+            mPassword.setText(null);
+            return false;
+        }
+        return true;
+    }
 
 
 

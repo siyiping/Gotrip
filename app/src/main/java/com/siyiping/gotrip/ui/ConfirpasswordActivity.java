@@ -1,25 +1,10 @@
 package com.siyiping.gotrip.ui;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.SignUpCallback;
-import com.example.siyiping.gotrip.R;
 
 public class ConfirpasswordActivity extends Activity {
 
+    /*
     private TextView mPassword;
     private TextView mPasswordconfirn;
     private TextView mNickname;
@@ -32,7 +17,7 @@ public class ConfirpasswordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirpassword);
 
-        newuser=new AVUser();
+        newuser=AVUser.getCurrentUser();
 
         Intent mIntent=new Intent();
         newuser.setMobilePhoneNumber(mIntent.getStringExtra("phone"));
@@ -153,6 +138,6 @@ public class ConfirpasswordActivity extends Activity {
             return true;
         }
     }
-
+*/
 
 }
