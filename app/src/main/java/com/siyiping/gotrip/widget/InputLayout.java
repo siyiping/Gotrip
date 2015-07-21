@@ -15,8 +15,8 @@ import com.example.siyiping.gotrip.R;
  */
 public class InputLayout extends LinearLayout {
 
-    private TextView guide;
-    private EditText input;
+    private String text;
+    private String texthint;
 
     public InputLayout(Context context){
         this(context,null);
@@ -29,24 +29,28 @@ public class InputLayout extends LinearLayout {
     public InputLayout(Context context,AttributeSet attrs,int defStyleAttr){
         super(context, attrs, defStyleAttr);
 
-        this.setFocusable(true);
-        this.requestFocus();
-
         TypedArray t=context.obtainStyledAttributes(attrs, R.styleable.InputLayout);
+        text=t.getString(R.styleable.InputLayout_text);
+        texthint=t.getString(R.styleable.InputLayout_texthint);
+        t.recycle();
 
-        guide=new TextView(context, attrs, defStyleAttr);
-        input=new EditText(context, attrs, defStyleAttr);
+        TextView guide=new TextView(context, attrs, defStyleAttr);
+        EditText input=new EditText(context, attrs, defStyleAttr);
 
-        guide.setText(t.getString(R.styleable.InputLayout_text));
-        input.setHint(t.getString(R.styleable.InputLayout_text_hint));
+        guide.setText(text);
+        this.addView(guide, (int) getResources().getDimension(R.dimen.widget_textview_width), ViewGroup.LayoutParams.MATCH_PARENT);
 
-        this.addView(guide, (int)getResources().getDimension(R.dimen.widget_textview_width), ViewGroup.LayoutParams.MATCH_PARENT);
         input.setMaxLines(1);
-
+        input.setHint(texthint);
         this.addView(input, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        input.setFocusable(true);
-        input.requestFocus();
+        input.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+            }
+        });
+
     }
 
 

@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="InputLayout">
         <attr name="text" format="string"></attr>
-        <attr name="text_hint" format="string"></attr>
+        <attr name="textColor" format="color"></attr>
+        <attr name="textFont" format="dimension"></attr>
     </declare-styleable>
 </resources>

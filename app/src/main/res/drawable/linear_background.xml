@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/linearlayout" ></item>
+    <item android:drawable="@drawable/linear_background" android:state_focused="true"></item>
+</selector>
