@@ -1,21 +1,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="0dp"
     tools:context="com.siyiping.gotrip.ui.Signup">
 
+    <com.siyiping.gotrip.widget.InputLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:text="@string/username"
+        android:id="@+id/first"
+        app:text_hint="@string/please_input_nickname">
 
-    <LinearLayout android:id="@+id/signup_panel" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    </com.siyiping.gotrip.widget.InputLayout>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/input_nickname"
             android:inputType="textFilter"
-
             android:background="@null"
             android:layout_marginTop="8dp"
             android:hint="@string/please_input_nickname"/>
@@ -111,7 +117,5 @@
                 android:layout_marginRight="30dp"
                 android:enabled="false" />
 
-
-    </LinearLayout>
 
 </LinearLayout>

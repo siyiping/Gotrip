@@ -69,6 +69,9 @@ public class Signup extends Activity {
 
     public void initView(){
 
+        View first=findViewById(R.id.first);
+        first.requestFocus();
+
         mTextphone=(EditText)findViewById(R.id.new_account_phone);
         mGetcode=(Button)findViewById(R.id.getcode);
         mGetcode.setOnClickListener(l);
