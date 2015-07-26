@@ -17,13 +17,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
@@ -34,6 +34,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="18IMVcCMjQQU4T8s4Bo5fgpw" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -51,7 +52,7 @@
         <activity
             android:name="com.siyiping.gotrip.ui.Signup"
             android:label="@string/title_activity_signin"
-            android:parentActivityName=".LoginActivity">
+            android:parentActivityName=".LoginActivity" >
         </activity>
         <activity
             android:name="com.siyiping.gotrip.ui.ConfirpasswordActivity"
@@ -61,6 +62,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.siyiping.gotrip.ui.Signup" />
         </activity>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
+        <service
+            android:name="com.siyiping.gotrip.service.NetWork"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name="com.siyiping.gotrip.service.DownloadOfflineMap"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
+
+

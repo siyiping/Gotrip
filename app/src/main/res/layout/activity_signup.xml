@@ -7,15 +7,6 @@
     android:padding="0dp"
     tools:context="com.siyiping.gotrip.ui.Signup">
 
-    <com.siyiping.gotrip.widget.InputLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        app:text="@string/username"
-        android:id="@+id/first"
-        app:text_hint="@string/please_input_nickname">
-
-    </com.siyiping.gotrip.widget.InputLayout>
 
         <EditText
             android:layout_width="match_parent"

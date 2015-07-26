@@ -1,8 +1,12 @@
 package com.example.siyiping.gotrip;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.util.Log;
@@ -14,7 +18,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVAnalytics;
-import com.avos.avoscloud.AVOSCloud;
+import com.siyiping.gotrip.service.NetWork;
 import com.siyiping.gotrip.ui.Navigation;
 import com.siyiping.gotrip.ui.Personal;
 import com.siyiping.gotrip.ui.Strategy;
@@ -28,6 +32,8 @@ public class MainActivity extends FragmentActivity  {
     private View indicator=null;
     private Resources mRes;
     private Intent mIntent;
+    private Intent mIntentNetWorkServiece;
+    private NetWork netWorkService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +43,7 @@ public class MainActivity extends FragmentActivity  {
 
 
         super.onCreate(savedInstanceState);
-        AVOSCloud.initialize(this, "dncec7gcbcmyxumaunavxokqb2ujh04xeagyj0t110xqgpa9", "krsmwsb0c00avt8xpqd60v8135vuq3mdyfjsysz0ppwddc45");
-        AVOSCloud.setDebugLogEnabled(true);
+
         setContentView(R.layout.activity_main);
 
         mIntent=getIntent();
@@ -74,6 +79,21 @@ public class MainActivity extends FragmentActivity  {
             }
         });
 
+        mIntentNetWorkServiece=new Intent("com.siyiping.gotrip.service.NetWork");
+        startService(mIntentNetWorkServiece);
+        bindService(mIntentNetWorkServiece,netWorkServiceCon, Context.BIND_AUTO_CREATE);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(mIntentNetWorkServiece);
+        super.onDestroy();
     }
 
     @Override
@@ -98,6 +118,7 @@ public class MainActivity extends FragmentActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    //获取tabwidget图标
     private View getIndicatorView(String name, int layoutId) {
         View v = getLayoutInflater().inflate(layoutId, null);
         TextView tv = (TextView) v.findViewById(R.id.tabText);
@@ -106,4 +127,16 @@ public class MainActivity extends FragmentActivity  {
     }
 
 
+    //连网的服务
+    private ServiceConnection netWorkServiceCon= new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            netWorkService=((NetWork.LocalBinder)service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 }
