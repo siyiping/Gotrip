@@ -12,20 +12,20 @@ import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.IBinder;
 
-import com.siyiping.gotrip.control.DeviceInfo;
+import com.siyiping.gotrip.control.UserInfo;
 
 public class NetWork extends Service {
 
     Context mContext;
     ConnectivityManager connectivityManager;
 
-    DeviceInfo myDevice;
+    UserInfo myDevice;
 
     @Override
     public void onCreate() {
         mContext = getApplicationContext();
         connectivityManager=(ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        myDevice=new DeviceInfo();
+        myDevice=new UserInfo();
         super.onCreate();
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); // 添加接收网络连接状态改变的Action
@@ -60,9 +60,9 @@ public class NetWork extends Service {
             if(intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)){
                 if(isNetworkConnected(connectivityManager)){
                     if(isWIFIConnected(connectivityManager)){
-                        myDevice.setNetWorkType(DeviceInfo.NETWORKTYPE_WIFI);
+                        myDevice.setNetWorkType(UserInfo.NETWORKTYPE_WIFI);
                     }else{
-                        myDevice.setNetWorkType(DeviceInfo.NETWORKTYPE_MOBILE);
+                        myDevice.setNetWorkType(UserInfo.NETWORKTYPE_MOBILE);
                     }
 
                 }
