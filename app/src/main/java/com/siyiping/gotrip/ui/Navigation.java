@@ -1,6 +1,7 @@
 package com.siyiping.gotrip.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,13 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.example.siyiping.gotrip.R;
+import com.siyiping.gotrip.control.UserInfo;
 
 /**
  * Created by siyiping on 15/6/17.
@@ -35,11 +42,18 @@ public class Navigation extends Fragment {
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
     private LocationMode mCurrentMode;
+    // 是否首次定位
+    boolean isFirstLoc = true;
+    //搜索相关
+    public GeoCoder mSearch;
+    private boolean getCitySuccess=false;
+
     View view;
     MapView mMapView = null;
+    UserInfo user;
 
     BaiduMap mBaiduMap;
-    boolean isFirstLoc = true;// 是否首次定位
+
 
     @Nullable
     @Override
@@ -58,6 +72,8 @@ public class Navigation extends Fragment {
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
 
+        user=new UserInfo();
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -66,13 +82,13 @@ public class Navigation extends Fragment {
 
         // 定位初始化
         mLocClient= new LocationClient(context);
-
         mLocClient.registerLocationListener(myListener);
 
         LocationClientOption locationClientOption=new LocationClientOption();
         locationClientOption.setOpenGps(true);
         locationClientOption.setCoorType("bd09ll");
-        locationClientOption.setScanSpan(3000);
+        locationClientOption.setIsNeedAddress(true);//不开无法获得城市街道等信息
+        locationClientOption.setScanSpan(5000);
         locationClientOption.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         mLocClient.setLocOption(locationClientOption);
         mLocClient.start();
@@ -80,10 +96,24 @@ public class Navigation extends Fragment {
             mLocClient.requestLocation();
         }
 
-        if(mLocClient.isStarted())
-            Log.i("siyiping","local is started");
-        else
-            Log.i("siyiping", "local is not started");
+        mSearch=GeoCoder.newInstance();
+        mSearch.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
+            @Override
+            public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+            }
+
+            @Override
+            public void onGetReverseGeoCodeResult(ReverseGeoCodeResult erseGeoCodeResult) {
+                ReverseGeoCodeResult.AddressComponent addressDetail=erseGeoCodeResult.getAddressDetail();
+                if(addressDetail==null)
+                    return;
+                getCitySuccess=true;
+                user.setCurrentCity(addressDetail.city);
+                SharedPreferences writeCityName = context.getSharedPreferences("current_city",Context.MODE_PRIVATE);
+                writeCityName.edit().putString("currentCity",addressDetail.city).commit();
+            }
+        });
 
         super.onStart();
     }
@@ -102,12 +132,17 @@ public class Navigation extends Fragment {
     @Override
     public void onPause() {
         //mMapView.onPause();
+        mLocClient.stop();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         //mMapView.onResume();
+        mLocClient.start();
+        if (mLocClient != null && mLocClient.isStarted()) {
+            mLocClient.requestLocation();
+        }
         super.onResume();
     }
 
@@ -128,11 +163,21 @@ public class Navigation extends Fragment {
                             // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(100).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
+
+            double currentLongitude=locData.longitude;//经度
+            double currentLatitude=locData.latitude;//纬度
+
+            LatLng ll = new LatLng(currentLatitude,
+                    currentLongitude);//反地理编码
+
+            //反geo搜索
+            if(!getCitySuccess)
+                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
                 isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
+
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(u);
             }

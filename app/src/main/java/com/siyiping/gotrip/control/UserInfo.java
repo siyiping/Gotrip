@@ -21,7 +21,7 @@ public class UserInfo {
     private String currentCity;
 
     //目的地城市
-    private HashMap destinationCity;
+    private HashMap<String,String> destinationCity;
 
     public int getNetWorkType() {
         return netWorkType;
