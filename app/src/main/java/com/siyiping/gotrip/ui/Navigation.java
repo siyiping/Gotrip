@@ -139,6 +139,16 @@ public class Navigation extends Fragment {
     @Override
     public void onResume() {
         //mMapView.onResume();
+        //地图显示最后一次定位的位置
+        BDLocation lasttimeLocation=mLocClient.getLastKnownLocation();
+        if(lasttimeLocation!=null) {
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(lasttimeLocation.getRadius())
+                    .latitude(lasttimeLocation.getLatitude())
+                    .longitude(lasttimeLocation.getLongitude()).build();
+            mBaiduMap.setMyLocationData(locData);
+        }
+        //重新定位
         mLocClient.start();
         if (mLocClient != null && mLocClient.isStarted()) {
             mLocClient.requestLocation();
