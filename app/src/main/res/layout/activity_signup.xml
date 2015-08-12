@@ -2,36 +2,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="0dp"
     tools:context="com.siyiping.gotrip.ui.Signup">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sign_up_item_height"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/linearlayout_bg_selector">
+
+        <TextView
+            android:layout_width="@dimen/sign_up_textview_width"
+            android:layout_height="wrap_content"
+            android:text="@string/please_input_nickname"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/input_nickname"
-            android:inputType="textFilter"
             android:background="@null"
-            android:layout_marginTop="8dp"
             android:hint="@string/please_input_nickname"/>
 
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sign_up_item_height"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/linearlayout_bg_selector">
+
+        <TextView
+            android:layout_width="@dimen/sign_up_textview_width"
+            android:layout_height="wrap_content"
+            android:text="@string/please_input_password"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/input_password"
             android:editable="false"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
             android:inputType="textPassword"
             android:hint="@string/please_input_password"
             android:digits="@string/num_and_character"
-            android:layout_marginTop="8dp"/>
+            android:background="@null"/>
+
+    </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sign_up_item_height"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/linearlayout_bg_selector">
 
+        <TextView
+            android:layout_width="@dimen/sign_up_textview_width"
+            android:layout_height="wrap_content"
+            android:text="@string/please_confirn_password"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -41,10 +77,22 @@
             android:hint="@string/please_confirn_password"
             android:digits="@string/num_and_character"
             android:editable="false"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="8dp"/>
+            android:background="@null"
+            />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sign_up_item_height"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/linearlayout_bg_selector">
+
+        <TextView
+            android:layout_width="@dimen/sign_up_textview_width"
+            android:layout_height="wrap_content"
+            android:text="@string/new_phone_number"/>
 
             <AutoCompleteTextView android:id="@+id/new_account_phone" android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,21 +100,18 @@
                 android:singleLine="true"
                 android:digits="0123456789"
                 android:editable="false"
+                android:background="@null"
                 android:hint="@string/new_phone_number"
-                android:layout_marginTop="8dp" />
+                />
+    </LinearLayout>
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:background="#CCCCCC"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sign_up_item_height"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/linearlayout_bg_selector">
 
 
                 <EditText android:id="@+id/verification_code" android:layout_width="wrap_content"
@@ -75,6 +120,7 @@
                     android:inputType="number"
                     android:digits="0123456789"
                     android:editable="false"
+                    android:background="@null"
                     android:hint="@string/please_input_verification_code"
                     android:maxLines="1" android:singleLine="true"
                     android:layout_marginTop="8dp" />
@@ -91,10 +137,6 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:background="#CCCCCC"/>
 
             <Button
                 android:layout_width="match_parent"

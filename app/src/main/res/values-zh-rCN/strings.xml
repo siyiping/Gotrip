@@ -11,7 +11,7 @@
     <string name="personal">个人</string>
 
     <!--login activity-->
-    <string name="signup">点击注册</string>
+    <string name="signup">注册/登录</string>
     <string name="account_hint">手机号</string>
     <string name="username">用户名</string>
     <string name="passsword">密码</string>
@@ -34,4 +34,7 @@
     <string name="password_too_long">密码太长会忘的ˇˍˇ</string>
     <string name="password_confirn_failed">两次输入的密码不同</string>
     <string name="forget_input_nickname">给自己起个大名吧！</string>
+
+    <!--personal frgment-->
+    <string name="personal_offline_map_manager">离线地图</string>
 </resources>

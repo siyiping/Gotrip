@@ -3,7 +3,6 @@ package com.example.siyiping.gotrip;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
@@ -20,7 +19,6 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +34,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.siyiping.gotrip.control.UserInfo;
 import com.siyiping.gotrip.ui.Signup;
 
 import java.util.ArrayList;
@@ -68,11 +67,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
-        ActionBar mAcitonbar=this.getActionBar();
-        mAcitonbar.setDisplayHomeAsUpEnabled(true);
-        //getMenuInflater().inflate(R.menu.menu_signin, menu);
 
         // Set up the login form.
         mPhoneView = (AutoCompleteTextView) findViewById(R.id.account);
@@ -121,18 +115,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    //登录
     private void Login(){
-        Log.i("siyiping","begin to login");
         String phone = mPhoneView.getText().toString();
         String password = mPasswordView.getText().toString();
         if(isNameValid(phone) && isPasswordValid(password)){
-            AVUser currentuser=new AVUser();
-            Log.i("siyiping","password is legal");
-            currentuser.logInInBackground(phone, password, new LogInCallback<AVUser>() {
+            final AVUser currentuser=new AVUser();
+            currentuser.loginByMobilePhoneNumberInBackground(phone, password, new LogInCallback<AVUser>() {
                 @Override
                 public void done(AVUser avUser, AVException e) {
-                    Log.i("siyiping","login   callback");
-                    if(avUser != null){
+                    if(e == null && avUser!=null){
+                        UserInfo userInfo=new UserInfo();
+                        userInfo.setCurrentUser(avUser);
+                        userInfo.setCurrentStatus(true);
                         Intent  intent=new Intent();
                         intent.setClass(LoginActivity.this, MainActivity.class);
                         intent.putExtra("tabtag","personal");

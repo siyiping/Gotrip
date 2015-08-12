@@ -69,7 +69,6 @@ public class Signup extends Activity {
 
     public void initView(){
 
-
         mTextphone=(EditText)findViewById(R.id.new_account_phone);
         mGetcode=(Button)findViewById(R.id.getcode);
         mGetcode.setOnClickListener(l);
@@ -99,6 +98,7 @@ public class Signup extends Activity {
         });
     }
 
+    //提示密码不符合输入规则
     View.OnFocusChangeListener listener=new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -137,7 +137,11 @@ public class Signup extends Activity {
                     newuser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(AVException e) {
-                            //e.printStackTrace();
+                            if(e!=null){
+                                //成功注册
+                            }else{
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -174,6 +178,7 @@ public class Signup extends Activity {
     }
 
 
+    //重发短信倒计时
     CountDownTimer downTimer=new CountDownTimer(60000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {

@@ -2,15 +2,15 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Myactionbar</item>
+        <item name="android:actionBarStyle">@style/Myactionbar</item>
         <item name="android:actionBarItemBackground">@drawable/selectable_background_myactionbar</item>
     </style>
 
-    <style name="ActionBar.Solid.Myactionbar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_background_textured_myactionbar</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_myactionbar</item>
-        <item name="android:backgroundSplit">@drawable/ab_background_textured_myactionbar</item>
+    <style name="Myactionbar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@color/lightblue</item>
+        <item name="android:backgroundSplit">@color/lightblue</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Myactionbar</item>
+        <item name="android:displayOptions">showTitle|showCustom</item>
     </style>
 
     <style name="ProgressBar.Myactionbar" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">

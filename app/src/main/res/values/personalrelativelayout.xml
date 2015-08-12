@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="WidgetPersonalItem">
+        <attr name="text" format="string"></attr>
+        <attr name="text_hint" format="string"></attr>
+    </declare-styleable>
+</resources>

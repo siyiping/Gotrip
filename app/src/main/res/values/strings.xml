@@ -36,4 +36,8 @@
     
     <!--string filter-->
     <string name="num_and_character">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <!--personal frgment-->
+    <string name="personal_offline_map_manager">Offline Map</string>
+    <string name="title_activity_offline_map_manage">OfflineMapManageActivity</string>
 </resources>

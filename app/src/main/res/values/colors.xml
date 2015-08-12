@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <color name="bluebutton">#17b4eb</color>
+
+    <color name="lightblue">#33aedc</color>
     <color name="bluebuttonclick">#00a0de</color>
+    <color name="greybackground">#ececec</color>
     
 </resources>

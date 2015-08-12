@@ -6,4 +6,19 @@
     <!--input linearlayout dimen-->
     <dimen name="widget_relativelayout_height">30dp</dimen>
     <dimen name="widget_textview_width">100dp</dimen>
+
+    <!--sign up activity-->
+    <dimen name="sign_up_item_height">45dp</dimen>
+    <dimen name="sign_up_textview_width">115dp</dimen>
+
+    <!--personal fragment-->
+    <dimen name="personal_fragment_item_height">40dp</dimen>
+    <dimen name="personal_fragment_item_margin_left_right">10dp</dimen>
+    <dimen name="personal_fragment_item_text_margin_left_right">15dp</dimen>
+    <dimen name="personal_fragment_item_image_margin_right">6dp</dimen>
+
+    <!--offlinemap item-->
+    <dimen name="offlinemap_item_height">40dp</dimen>
+    <dimen name="offlinemap_item_padding_left_right">10dp</dimen>
+
 </resources>
