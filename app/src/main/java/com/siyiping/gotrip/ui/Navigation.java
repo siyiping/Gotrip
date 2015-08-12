@@ -14,6 +14,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -64,6 +65,7 @@ public class Navigation extends Fragment {
 
         context=this.getActivity().getApplicationContext();
 
+        SDKInitializer.initialize(context);
         view = inflater.inflate(R.layout.navigationfragment, container);
 
 
@@ -191,6 +193,7 @@ public class Navigation extends Fragment {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
+            Log.i("siyiping","receive location listener");
             // map view 销毁后不在处理新接收的位置
             if (location == null || mMapView == null)
                 return;
