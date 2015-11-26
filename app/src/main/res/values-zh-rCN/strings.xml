@@ -37,4 +37,7 @@
 
     <!--personal frgment-->
     <string name="personal_offline_map_manager">离线地图</string>
+
+    <!--offline map-->
+    <string name="check_offline_map">查看</string>
 </resources>

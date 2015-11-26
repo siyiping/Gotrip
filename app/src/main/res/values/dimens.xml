@@ -12,7 +12,7 @@
     <dimen name="sign_up_textview_width">115dp</dimen>
 
     <!--personal fragment-->
-    <dimen name="personal_fragment_item_height">40dp</dimen>
+    <dimen name="personal_fragment_item_height">50dp</dimen>
     <dimen name="personal_fragment_item_margin_left_right">10dp</dimen>
     <dimen name="personal_fragment_item_text_margin_left_right">15dp</dimen>
     <dimen name="personal_fragment_item_image_margin_right">6dp</dimen>

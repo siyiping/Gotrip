@@ -3,5 +3,6 @@
     <declare-styleable name="WidgetPersonalItem">
         <attr name="text" format="string"></attr>
         <attr name="text_hint" format="string"></attr>
+        <attr name="image_res" format="reference"></attr>
     </declare-styleable>
 </resources>

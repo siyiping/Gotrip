@@ -1,4 +1,4 @@
-package com.siyiping.gotrip.ui;
+package com.siyiping.gotrip.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.siyiping.gotrip.R;
+import com.siyiping.gotrip.R;
+
 
 /**
  * Created by siyiping on 15/6/17.

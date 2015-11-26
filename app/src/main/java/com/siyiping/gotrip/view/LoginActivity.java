@@ -1,4 +1,4 @@
-package com.example.siyiping.gotrip;
+package com.siyiping.gotrip.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -34,8 +34,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
-import com.siyiping.gotrip.control.UserInfo;
-import com.siyiping.gotrip.ui.Signup;
+import com.siyiping.gotrip.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,9 +124,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 @Override
                 public void done(AVUser avUser, AVException e) {
                     if(e == null && avUser!=null){
-                        UserInfo userInfo=new UserInfo();
-                        userInfo.setCurrentUser(avUser);
-                        userInfo.setCurrentStatus(true);
+                        ((BaseApplication)getApplication()).setCurrentUser(avUser);
+                        ((BaseApplication)getApplication()).setCurrentStatus(true);
                         Intent  intent=new Intent();
                         intent.setClass(LoginActivity.this, MainActivity.class);
                         intent.putExtra("tabtag","personal");

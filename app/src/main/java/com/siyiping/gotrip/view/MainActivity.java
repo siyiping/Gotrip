@@ -1,4 +1,4 @@
-package com.example.siyiping.gotrip;
+package com.siyiping.gotrip.view;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +17,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.siyiping.gotrip.R;
 import com.siyiping.gotrip.service.NetWork;
-import com.siyiping.gotrip.ui.Navigation;
-import com.siyiping.gotrip.ui.Personal;
-import com.siyiping.gotrip.ui.Strategy;
 
 
 public class MainActivity extends FragmentActivity  {
@@ -52,7 +49,7 @@ public class MainActivity extends FragmentActivity  {
         mRes=getResources();
 
         mTabhost=(FragmentTabHost)findViewById(android.R.id.tabhost);
-        mTabhost.setup(getApplicationContext(),getSupportFragmentManager(),android.R.id.tabcontent);
+        mTabhost.setup(this,getSupportFragmentManager(),R.id.realtabcontent);
 
         indicator=getIndicatorView(mRes.getString(R.string.navigation),R.layout.navigationtab);
         mTabhost.addTab(mTabhost.newTabSpec("navigation").setIndicator(indicator), Navigation.class, null);
@@ -75,11 +72,11 @@ public class MainActivity extends FragmentActivity  {
             @Override
             public void onTabChanged(String tabId) {
                 mTabhost.setCurrentTabByTag(tabId);
-                Log.i(TAG, "   tab  changed  ");
             }
         });
 
-        mIntentNetWorkServiece=new Intent("com.siyiping.gotrip.service.NetWork");
+        mIntentNetWorkServiece=new Intent();
+        mIntentNetWorkServiece.setClass(this, NetWork.class);
         startService(mIntentNetWorkServiece);
         bindService(mIntentNetWorkServiece,netWorkServiceCon, Context.BIND_AUTO_CREATE);
 
@@ -92,6 +89,7 @@ public class MainActivity extends FragmentActivity  {
 
     @Override
     protected void onDestroy() {
+        unbindService(netWorkServiceCon);
         stopService(mIntentNetWorkServiece);
         super.onDestroy();
     }

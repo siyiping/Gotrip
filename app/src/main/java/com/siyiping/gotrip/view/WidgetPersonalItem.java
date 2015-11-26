@@ -1,4 +1,4 @@
-package com.siyiping.gotrip.ui;
+package com.siyiping.gotrip.view;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,15 +7,15 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.siyiping.gotrip.R;
+import com.siyiping.gotrip.R;
+
 
 /**
  * Created by siyiping on 15/8/2.
  */
-public class WidgetPersonalItem extends RelativeLayout {
+public class WidgetPersonalItem extends LinearLayout {
 
     private TextView mTextView;
     private ImageView mImageView;
@@ -37,26 +37,29 @@ public class WidgetPersonalItem extends RelativeLayout {
         mString=typedArray.getString(R.styleable.WidgetPersonalItem_text);
         mHintString=typedArray.getString(R.styleable.WidgetPersonalItem_text_hint);
 
-        this.setPadding(20,0,15,0);
-        this.setVerticalGravity(Gravity.CENTER_VERTICAL);
+        this.setPadding(25, 0, 25, 0);
+        this.setOrientation(HORIZONTAL);
+        this.setGravity(Gravity.CENTER_VERTICAL);
+        this.setClickable(true);
 
         mTextView=new TextView(context,attrs);
         LinearLayout.LayoutParams textViewParams=new LinearLayout.LayoutParams(context,attrs);
-        textViewParams.gravity=Gravity.LEFT|Gravity.CENTER_VERTICAL;
-        textViewParams.setMargins(30,0,0,0);
+        textViewParams.leftMargin = 100;
         mTextView.setLayoutParams(textViewParams);
         mTextView.setGravity(Gravity.CENTER);
-        mTextView.setText(mRes.getString(R.string.personal_offline_map_manager));
+        mTextView.setText(typedArray.getText(R.styleable.WidgetPersonalItem_text));
+        mTextView.setClickable(false);
 
 
         mImageView=new ImageView(context,attrs);
         LinearLayout.LayoutParams imageViewParams=new LinearLayout.LayoutParams(context,attrs);
-        imageViewParams.setMargins(0,0,(int)mRes.getDimension(R.dimen.personal_fragment_item_image_margin_right),0);
+        imageViewParams.setMargins(0,0,0,0);
         mImageView.setLayoutParams(imageViewParams);
-        //mImageView.setImageDrawable(mRes.getDrawable(R.drawable.));
+        mImageView.setImageDrawable(typedArray.getDrawable(R.styleable.WidgetPersonalItem_image_res));
+        mImageView.setClickable(false);
 
-        this.addView(mTextView, LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        this.addView(mImageView,LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        this.addView(mImageView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        this.addView(mTextView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         typedArray.recycle();
 

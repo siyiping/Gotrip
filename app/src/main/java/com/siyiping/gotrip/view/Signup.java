@@ -1,4 +1,4 @@
-package com.siyiping.gotrip.ui;
+package com.siyiping.gotrip.view;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVMobilePhoneVerifyCallback;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SignUpCallback;
-import com.example.siyiping.gotrip.R;
+import com.siyiping.gotrip.R;
 
 
 public class Signup extends Activity {

@@ -1,4 +1,4 @@
-package com.siyiping.gotrip.ui;
+package com.siyiping.gotrip.view;
 
 import android.app.Activity;
 

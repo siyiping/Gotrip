@@ -35,6 +35,7 @@ dependencies {
     compile files('libs/qq.sdk.1.6.1.jar')
     compile files('libs/weibo.sdk.android.sso.3.0.1-leancloud.jar')
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:support-v13:22.2.+'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile files('libs/baidumapapi_v3_5_0.jar')
     compile files('libs/locSDK_6.03.jar')

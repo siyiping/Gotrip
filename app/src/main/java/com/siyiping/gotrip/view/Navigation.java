@@ -1,4 +1,4 @@
-package com.siyiping.gotrip.ui;
+package com.siyiping.gotrip.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,9 +29,8 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.example.siyiping.gotrip.BaseApplication;
-import com.example.siyiping.gotrip.R;
-import com.siyiping.gotrip.control.UserInfo;
+import com.siyiping.gotrip.R;
+import com.tencent.tauth.bean.UserInfo;
 
 /**
  * Created by siyiping on 15/6/17.
@@ -76,8 +75,6 @@ public class Navigation extends Fragment {
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
 
-        user=new UserInfo();
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -116,9 +113,8 @@ public class Navigation extends Fragment {
                 if(addressDetail==null)
                     return;
                 getCitySuccess=true;
-                user.setCurrentCity(addressDetail.city);
                 SharedPreferences writeCityName = context.getSharedPreferences("current_city",Context.MODE_PRIVATE);
-                writeCityName.edit().putString("currentCity",addressDetail.city).commit();
+                writeCityName.edit().putString("currentCity",addressDetail.city).apply();
             }
         });
 
