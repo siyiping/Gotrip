@@ -2,6 +2,7 @@ package com.siyiping.gotrip.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.FileTileProvider;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -24,11 +26,16 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.map.Tile;
+import com.baidu.mapapi.map.TileOverlay;
+import com.baidu.mapapi.map.TileOverlayOptions;
+import com.baidu.mapapi.map.TileProvider;
 import com.siyiping.gotrip.R;
 import com.tencent.tauth.bean.UserInfo;
 
@@ -50,6 +57,10 @@ public class Navigation extends Fragment {
     //搜索相关
     public GeoCoder mSearch;
     private boolean getCitySuccess=false;
+
+    TileProvider tileProvider;
+    TileOverlay tileOverlay;
+    Tile offlineTile;
 
     View view;
     MapView mMapView = null;
@@ -222,6 +233,56 @@ public class Navigation extends Fragment {
         }
     }
 
+    /**
+     * 瓦片图的离线添加
+     */
+    private void offlineTile() {
+        if (tileOverlay != null && mBaiduMap != null) {
+            tileOverlay.removeTileOverlay();
+        }
+
+        /**
+         * 定义瓦片图的离线Provider，并实现相关接口
+         * MAX_LEVEL、MIN_LEVEL 表示地图显示瓦片图的最大、最小级别
+         * Tile 对象表示地图每个x、y、z状态下的瓦片对象
+         */
+        tileProvider = new FileTileProvider() {
+            @Override
+            public Tile getTile(int x, int y, int z) {
+                // 根据地图某一状态下x、y、z加载指定的瓦片图
+                String filedir = "LocalTileImage/" + z + "/" + z + "_" + x + "_" + y + ".jpg";
+                Bitmap bm = getFromAssets(filedir);
+                if (bm == null) {
+                    return null;
+                }
+                // 瓦片图尺寸必须满足256 * 256
+                offlineTile = new Tile(bm.getWidth(), bm.getHeight(), toRawData(bm));
+                bm.recycle();
+                return offlineTile;
+            }
+
+            @Override
+            public int getMaxDisLevel() {
+                return MAX_LEVEL;
+            }
+
+            @Override
+            public int getMinDisLevel() {
+                return MIN_LEVEL;
+            }
+
+        };
+        TileOverlayOptions options = new TileOverlayOptions();
+        // 构造显示瓦片图范围，当前为世界范围
+        LatLng northeast = new LatLng(80, 180);
+        LatLng southwest = new LatLng(-80, -180);
+        // 设置离线瓦片图属性option
+        options.tileProvider(tileProvider)
+                .setPositionFromBounds(new LatLngBounds.Builder().include(northeast).include(southwest).build());
+        // 通过option指定相关属性，向地图添加离线瓦片图对象
+        tileOverlay = mBaiduMap.addTileLayer(options);
+
+    }
 
 }
 
