@@ -2,7 +2,9 @@ package com.siyiping.gotrip.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,10 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.Tile;
+import com.baidu.mapapi.map.TileOverlay;
+import com.baidu.mapapi.map.TileOverlayOptions;
+import com.baidu.mapapi.map.TileProvider;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
@@ -32,12 +38,11 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.baidu.mapapi.map.Tile;
-import com.baidu.mapapi.map.TileOverlay;
-import com.baidu.mapapi.map.TileOverlayOptions;
-import com.baidu.mapapi.map.TileProvider;
 import com.siyiping.gotrip.R;
 import com.tencent.tauth.bean.UserInfo;
+
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 /**
  * Created by siyiping on 15/6/17.
@@ -45,7 +50,10 @@ import com.tencent.tauth.bean.UserInfo;
 public class Navigation extends Fragment {
 
     public Context context;
-
+    // 设置瓦片图的在线缓存大小，默认为20 M
+    private static final int TILE_TMP = 20 * 1024 * 1024;
+    private static final int MAX_LEVEL = 21;
+    private static final int MIN_LEVEL = 3;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
@@ -284,6 +292,39 @@ public class Navigation extends Fragment {
 
     }
 
+    /**
+     * 瓦片文件解析为Bitmap
+     * @param fileName
+     * @return 瓦片文件的Bitmap
+     */
+    public Bitmap getFromAssets(String fileName) {
+        AssetManager am = context.getAssets();
+        InputStream is = null;
+        Bitmap bm;
+
+        try {
+            is = am.open(fileName);
+            bm = BitmapFactory.decodeStream(is);
+            return bm;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 解析Bitmap
+     * @param bitmap
+     * @return
+     */
+    byte[] toRawData(Bitmap bitmap) {
+        ByteBuffer buffer = ByteBuffer.allocate(bitmap.getWidth()
+                * bitmap.getHeight() * 4);
+        bitmap.copyPixelsToBuffer(buffer);
+        byte[] data = buffer.array();
+        buffer.clear();
+        return data;
+    }
 }
 
 
