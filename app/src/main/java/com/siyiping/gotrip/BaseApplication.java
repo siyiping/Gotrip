@@ -1,4 +1,4 @@
-package com.siyiping.gotrip.view;
+package com.siyiping.gotrip;
 
 import android.app.Activity;
 import android.app.Application;
@@ -59,7 +59,7 @@ public class BaseApplication extends Application {
         AVOSCloud.setDebugLogEnabled(true);
 
         //初始化百度地图sdk
-        SDKInitializer.initialize(this.getApplicationContext());
+        SDKInitializer.initialize(getApplicationContext());
 
         //android系统版本
         mSystemVersion= Build.VERSION.SDK_INT;

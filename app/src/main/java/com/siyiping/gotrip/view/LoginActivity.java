@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.siyiping.gotrip.BaseApplication;
 import com.siyiping.gotrip.R;
 
 import java.util.ArrayList;

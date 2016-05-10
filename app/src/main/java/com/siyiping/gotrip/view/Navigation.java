@@ -38,6 +38,7 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.siyiping.gotrip.BaseApplication;
 import com.siyiping.gotrip.R;
 import com.tencent.tauth.bean.UserInfo;
 
@@ -258,7 +259,7 @@ public class Navigation extends Fragment {
             @Override
             public Tile getTile(int x, int y, int z) {
                 // 根据地图某一状态下x、y、z加载指定的瓦片图
-                String filedir = "LocalTileImage/" + z + "/" + z + "_" + x + "_" + y + ".jpg";
+                String filedir = "xihu.png";
                 Bitmap bm = getFromAssets(filedir);
                 if (bm == null) {
                     return null;

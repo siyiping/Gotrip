@@ -12,7 +12,7 @@ import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.IBinder;
 
-import com.siyiping.gotrip.view.BaseApplication;
+import com.siyiping.gotrip.BaseApplication;
 
 public class NetWork extends Service {
 

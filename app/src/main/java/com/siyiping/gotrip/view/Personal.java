@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
+import com.siyiping.gotrip.BaseApplication;
 import com.siyiping.gotrip.R;
 import com.siyiping.gotrip.utils.Utils;
 

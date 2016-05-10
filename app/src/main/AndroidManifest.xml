@@ -3,7 +3,7 @@
     package="com.siyiping.gotrip" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -40,14 +40,14 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
-        android:name=".view.BaseApplication"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="18IMVcCMjQQU4T8s4Bo5fgpw" />
+            android:value="84OD8oedF8nHV0uMUdT2PcXH2irLHeLQ" />
 
         <activity
             android:name=".view.MainActivity"
