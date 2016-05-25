@@ -40,6 +40,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.siyiping.gotrip.BaseApplication;
 import com.siyiping.gotrip.R;
+import com.siyiping.gotrip.utils.Utils;
 import com.tencent.tauth.bean.UserInfo;
 
 import java.io.InputStream;
@@ -48,7 +49,7 @@ import java.nio.ByteBuffer;
 /**
  * Created by siyiping on 15/6/17.
  */
-public class Navigation extends Fragment {
+public class Navigation extends Fragment implements BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapStatusChangeListener{
 
     public Context context;
     // 设置瓦片图的在线缓存大小，默认为20 M
@@ -67,40 +68,70 @@ public class Navigation extends Fragment {
     public GeoCoder mSearch;
     private boolean getCitySuccess=false;
 
+    MapStatusUpdate mMapStatusUpdate;
     TileProvider tileProvider;
     TileOverlay tileOverlay;
     Tile offlineTile;
 
     View view;
-    MapView mMapView = null;
+    MapView mMapView;
     UserInfo user;
 
     BaiduMap mBaiduMap;
+    private boolean mapLoaded = false;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context=this.getActivity().getApplicationContext();
+        //初始化百度地图sdk
+        SDKInitializer.initialize(getActivity().getApplication().getApplicationContext());
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (view == null) {
+            view = inflater.inflate(R.layout.navigationfragment, null);
+        }
 
-        context=this.getActivity().getApplicationContext();
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent != null) {
+            parent.removeView(view);
+        }
 
-        SDKInitializer.initialize(context);
-        view = inflater.inflate(R.layout.navigationfragment, container);
-
-
-        mMapView = (MapView) view.findViewById(R.id.bmapView);
-        mBaiduMap = mMapView.getMap();
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
-
-        // 开启定位图层
-        mBaiduMap.setMyLocationEnabled(true);
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override
     public void onStart() {
+        if (mMapView == null || mBaiduMap == null){
+            mMapView = (MapView) view.findViewById(R.id.bmapView);
+            mBaiduMap = mMapView.getMap();
+            mBaiduMap.setOnMapLoadedCallback(this);
+            mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, null));
 
+            //定义地图状态
+            MapStatus mMapStatus = new MapStatus.Builder()
+                    .zoom(18)
+                    .build();
+            //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
+            mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+            //改变地图状态
+            mBaiduMap.setMapStatus(mMapStatusUpdate);
+        }
+        // 开启定位图层
+        mBaiduMap.setMyLocationEnabled(true);
+
+        Double mLastLongitude=((BaseApplication)getActivity().getApplication()).mLastLongitude;
+        Double mLastLatitude=((BaseApplication) getActivity().getApplication()).mLastLatitude;
+        MyLocationData locData = new MyLocationData.Builder()
+                // 此处设置开发者获取到的方向信息，顺时针0-360
+                .direction(100).latitude(mLastLongitude)
+                .longitude(mLastLatitude).build();
+        mBaiduMap.setMyLocationData(locData);
+
+        mBaiduMap.setOnMapStatusChangeListener(this);
         // 定位初始化
         mLocClient= new LocationClient(context);
         mLocClient.registerLocationListener(myListener);
@@ -142,57 +173,17 @@ public class Navigation extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        //mMapView.onDestroy();
-        SharedPreferences lastlocation= context.getSharedPreferences("lastlocation",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor=lastlocation.edit();
-        if(currentLongitude != 0 &&  currentLatitude != 0){
-            editor.putString("Longitude",String.valueOf(currentLongitude));
-            editor.putString("Latitude",String.valueOf(currentLatitude));
-            editor.commit();
-        }
-        Log.i("siyiping","commit  currentLongitude"+currentLongitude+" currentLatitude"+currentLatitude);
-        mLocClient.stop();
-        mLocClient.unRegisterLocationListener(myListener);
-
-        mBaiduMap.setMyLocationEnabled(false);
-
-        super.onDestroyView();
-    }
-
-    @Override
     public void onPause() {
-        //mMapView.onPause();
+        mMapView.onPause();
         mLocClient.stop();
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        //mMapView.onResume();
-        //定位到上次的位置
-        Double mLastLongitude=((BaseApplication)getActivity().getApplication()).mLastLongitude;
-        Double mLastLatitude=((BaseApplication) getActivity().getApplication()).mLastLatitude;
-//        MyLocationData locData = new MyLocationData.Builder()
-//                        // 此处设置开发者获取到的方向信息，顺时针0-360
-//                .direction(100).latitude(mLastLongitude)
-//                .longitude(mLastLatitude).build();
-//        mBaiduMap.setMyLocationData(locData);
+        //offlineTile();
+        mMapView.onResume();
 
-        LatLng cenpt = new LatLng(mLastLatitude,mLastLongitude);
-        //定义地图状态
-        MapStatus mMapStatus = new MapStatus.Builder()
-                .target(cenpt)
-                .zoom(18)
-                .build();
-        //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
-
-
-        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-        //改变地图状态
-        mBaiduMap.setMapStatus(mMapStatusUpdate);
-
-        Log.i("siyiping", "  navigation  mLastLongitude =" + mLastLongitude + " mLastLatitude =" + mLastLatitude);
         //请求定位
         mLocClient.start();
         if (mLocClient != null && mLocClient.isStarted()) {
@@ -201,6 +192,43 @@ public class Navigation extends Fragment {
         super.onResume();
     }
 
+    @Override
+    public void onDestroyView() {
+        //mMapView.onDestroy();
+        SharedPreferences lastlocation= context.getSharedPreferences("lastlocation",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=lastlocation.edit();
+        if(currentLongitude != 0 &&  currentLatitude != 0){
+            editor.putString("Longitude",String.valueOf(currentLongitude));
+            editor.putString("Latitude",String.valueOf(currentLatitude));
+            editor.apply();
+        }
+        Log.i("siyiping","commit  currentLongitude"+currentLongitude+" currentLatitude"+currentLatitude);
+        mLocClient.stop();
+        mLocClient.unRegisterLocationListener(myListener);
+
+        mBaiduMap.setMyLocationEnabled(false);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onMapLoaded() {
+        mapLoaded = true;
+    }
+
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+
+    }
 
     /**
      * 定位SDK监听函数
@@ -221,7 +249,7 @@ public class Navigation extends Fragment {
 
             currentLongitude=locData.longitude;//经度
             currentLatitude=locData.latitude;//纬度
-
+            Log.i(Utils.TAG,"currentLongitude->"+currentLongitude+"  currentLatitude"+currentLatitude);
             LatLng ll = new LatLng(currentLatitude,
                     currentLongitude);//反地理编码
 
@@ -259,7 +287,8 @@ public class Navigation extends Fragment {
             @Override
             public Tile getTile(int x, int y, int z) {
                 // 根据地图某一状态下x、y、z加载指定的瓦片图
-                String filedir = "xihu.png";
+                Log.i(Utils.TAG,"x->"+x+" y->"+y+" z->"+z);
+                String filedir = "LocalTileImage/" + z + "/" + z + "_" + x + "_" + y + ".png";
                 Bitmap bm = getFromAssets(filedir);
                 if (bm == null) {
                     return null;
@@ -291,6 +320,18 @@ public class Navigation extends Fragment {
         // 通过option指定相关属性，向地图添加离线瓦片图对象
         tileOverlay = mBaiduMap.addTileLayer(options);
 
+        if (mapLoaded) {
+            setMapStatusLimits();
+        }
+    }
+
+    private void setMapStatusLimits() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(new LatLng(39.94001804746338, 116.41224644234747))
+                .include(new LatLng(39.90299859954822, 116.38359947963427));
+        mBaiduMap.setMapStatusLimits(builder.build());
+        mBaiduMap.setMaxAndMinZoomLevel(17.0f, 16.0f);
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NONE);
     }
 
     /**

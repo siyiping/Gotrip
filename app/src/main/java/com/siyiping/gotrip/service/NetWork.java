@@ -18,7 +18,7 @@ public class NetWork extends Service {
 
     Context mContext;
     ConnectivityManager connectivityManager;
-
+    Intent mIntentDownloadOfflineMap;
     //Baseapplication
     BaseApplication mBaseApplication;
     @Override
@@ -34,7 +34,7 @@ public class NetWork extends Service {
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); // 添加接收网络连接状态改变的Action
         registerReceiver(mReceiver, mFilter);
         if(isWIFIConnected(connectivityManager)){
-            Intent mIntentDownloadOfflineMap= new Intent(mContext, downloadOfflineMapCon.getClass());
+            mIntentDownloadOfflineMap= new Intent(mContext, downloadOfflineMapCon.getClass());
             startService(mIntentDownloadOfflineMap);
             bindService(mIntentDownloadOfflineMap,downloadOfflineMapCon,Context.BIND_AUTO_CREATE);
         }
@@ -50,6 +50,13 @@ public class NetWork extends Service {
         return new LocalBinder();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbindService(downloadOfflineMapCon);
+        stopService(mIntentDownloadOfflineMap);
+        unregisterReceiver(mReceiver);
+    }
 
     public class LocalBinder extends Binder{
         public NetWork getService(){

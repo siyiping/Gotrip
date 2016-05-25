@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:layout_gravity="center_horizontal"
-        android:drawableTop="@drawable/navigation"
+        android:drawableTop="@drawable/guide"
         />
 
 </LinearLayout>

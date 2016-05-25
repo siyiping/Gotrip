@@ -51,7 +51,8 @@
 
         <activity
             android:name=".view.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,17 +62,21 @@
         <activity
             android:name=".view.LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateVisible"
             android:parentActivityName="com.siyiping.gotrip.view.MainActivity">
         </activity>
         <activity
             android:name=".view.Signup"
             android:label="@string/title_activity_signin"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.siyiping.gotrip.view.LoginActivity" >
         </activity>
         <activity
             android:name=".view.ConfirpasswordActivity"
             android:label="@string/title_activity_confirpassword"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.siyiping.gotrip.view.Signup" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -92,6 +97,7 @@
         <activity
             android:name=".view.OfflineMapManageActivity"
             android:parentActivityName=".view.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_offline_map_manage" >
         </activity>
     </application>
